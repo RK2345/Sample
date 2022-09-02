@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+    <head>
+        <title>L2E 2nd Round</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script
+        src="https://login2explore.com/jpdb/resources/js/0.0.4/jpdb-commons.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Employee Details</h2>
+            <form id="empForm" method="post">
+                <div class="form-group">
+                    <span><label for="empId">Employee ID:</label> <label id="empIdMsg">
+                        </label></span>
+                    <input type="text" class="form-control" name="empId" id="empId"
+                           placeholder="Enter Employee ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="empName">Employee Name:</label>
+                    <input type="text" class="form-control" id="empName"
+                           placeholder="Enter Employee Name" name="empName">
+                </div>
+                <div class="form-group">
+                    <label for="empEmail">Email:</label>
+                    <input type="email" class="form-control" id="empEmail"
+                           placeholder="Enter Employee Email" name="empEmail">
+                </div>
+                <div class="form-group">
+                    <span><label for="mobile">Mobile:</label> <label id="mobIdMsg">
+                        </label></span>
+                    <input type="text" class="form-control" name="mobile" id="mobId"
+                           placeholder="Enter Mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label for="Address">Address:</label>
+                    <input type="text" class="form-control" id="Address"
+                           placeholder="Enter Employee Address" name="Address">
+                </div>
+                <div class="form-group">
+                    <label for="PostalCode">Postal Code:</label>
+                    <input type="text" class="form-control" id="PostalCode"
+                           placeholder="Enter Postal Code" name="Postal Code">
+                </div>
+                <input type="button" class="btn btn-primary" id="empSave" value="Save"
+                       onclick="saveEmployee();">
+            </form>
+        </div>
+        <script>
+            function validateAndGetFormData() {
+                var empIdVar = $("#empId").val();
+                if (empIdVar === "") {
+                    alert("Employee ID Required Value");
+                    $("#empId").focus();
+                    return "";
+                }
+                var empNameVar = $("#empName").val();
+                if (empNameVar === "") {
+                    alert("Employee Name is Required Value");
+                    $("#empName").focus();
+                    return "";
+                }
+                var empEmailVar = $("#empEmail").val();
+                if (empEmailVar === "") {
+                    alert("Employee Email is Required Value");
+                    $("#empEmail").focus();
+                    return "";
+                }
+                var mobIdVar = $("#mobId").val();
+                if (mobIdVar === "") {
+                    alert("Employee Mobile Required Value");
+                    $("#mobId").focus();
+                    return "";
+                }
+                var AddressVar = $("#Address").val();
+                if (mobIdVar === "") {
+                    alert("Employee Address Required Value");
+                    $("#Address").focus();
+                    return "";
+                }
+                var PostalCodeVar = $("#PostalCode").val();
+                if (mobIdVar === "") {
+                    alert("Employee Postal Code Required Value");
+                    $("#PostalCode").focus();
+                    return "";
+                }
+                var jsonStrObj = {
+                    empId: empIdVar,
+                    empName: empNameVar,
+                    empEmail: empEmailVar,
+                    mobId: mobIdVar,
+                    Address: AddressVar,
+                    PostalCode: PostalCodeVar,
+                };
+                return JSON.stringify(jsonStrObj);
+            }
+
+            function resetForm() {
+                $("#empId").val("");
+                $("#empName").val("");
+                $("#empEmail").val("");
+                $("#mobId").val("");
+                $("#Address").val("");
+                $("#PostalCode").val("");
+                $("#empId").focus();
+            }
+            function saveEmployee() {
+                var jsonStr = validateAndGetFormData();
+                if (jsonStr === "") {
+                    return;
+                }
+                var putReqStr = createPUTRequest("90937411|-31949292202622253|90943456",
+                        jsonStr, "Emp", "EMP-REL");
+                alert(putReqStr);
+                jQuery.ajaxSetup({async: false});
+                var resultObj = executeCommandAtGivenBaseUrl(putReqStr,
+                        "http://api.login2explore.com:5577", "/api/iml");
+                alert(JSON.stringify(resultObj));
+                jQuery.ajaxSetup({async: true});
+                resetForm();
+            }
+        </script>
+    </body>
+</html>
